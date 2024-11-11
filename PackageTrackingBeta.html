@@ -1,0 +1,385 @@
+<!--Force IE6 into quirks mode with this comment tag-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+<title>HUB Delivery Services</title>
+<style type="text/css">
+
+body{
+margin: 0;
+padding: 0;
+border: 0;
+overflow: hidden;
+height: 100%; 
+max-height: 100%; 
+}
+
+p.mission {
+    text-align: center;
+    line-height: 250%;
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
+}
+
+/* unvisited link */
+a:link {
+    color: #FFFFFF;
+}
+
+/* visited link */
+a:visited {
+    color: #FFFFFF;
+}
+
+/* mouse over link */
+a:hover {
+    color: #777777;
+}
+
+/* selected link */
+a:active {
+    color: #777777;
+}
+
+#framecontent{
+position: absolute; 
+top: 0; 
+left: 0; 
+width: 100%; 
+height: 100px; /*Height of frame div*/
+overflow: hidden; /*Disable scrollbars. Set to "scroll" to enable*/
+background-color: #000;
+color: white;
+}
+
+#maincontent{
+position: fixed; 
+top: 100px; /*Set top value to HeightOfFrameDiv*/
+left: 0;
+right: 0;
+bottom: 0;
+overflow: auto;
+    background-color: #000000;
+    background-size: 100% 160%;
+}
+
+#header{
+position: absolute;
+top: -40px;
+left: 0px;
+width:100%;
+z-index: 125;
+font-family: tahoma, verdana, arial;
+}
+
+#footer{
+position: absolute;
+left: 0px;
+width:100%;
+height:260px;
+z-index: 125;
+    background-color: #444;
+font-family: tahoma, verdana, arial;
+}
+
+
+#menuA{
+position: absolute;
+width: 100%;
+top: 40px;
+left: 0px;
+font-family: tahoma, verdana, arial;
+}
+
+#services{
+    background-color: #000;
+    margin-top: 140px;
+    color: #ffffff;
+    font-family: tahoma, verdana, arial;
+    font-size:1.0em;
+    width: 100%;
+    height: 100%;
+}
+
+#resultTable {
+    border: 0px solid;
+    font-size:20px;
+    font-family: arial, tahoma, verdana;
+    border-spacing: 5px 5px;
+    background-color: #f1e9e9;
+}
+
+#resultBody
+{
+  border: 0px solid;
+}
+
+table, td {
+    border: 0px;
+}
+
+.table2 {
+    border: 0px;
+    font-size:1.0em;
+    font-family: tahoma, verdana, arial;
+    color: #fff;
+    border-spacing: 46px 50px;
+}
+
+.table3 {
+    border: 0px;
+    font-size:1;
+    font-family: arial, tahoma, verdana;
+    color: #fff;
+    border-spacing: 26px 50px;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.innertube{
+margin: 0px; /*Margins for inner DIV inside each DIV (to provide padding)*/
+}
+
+* html body{ /*IE6 hack*/
+padding: 130px 0 0 0; /*Set value to (HeightOfFrameDiv 0 0 0)*/
+}
+
+* html #maincontent{ /*IE6 hack*/
+height: 100%; 
+width: 100%; 
+}
+
+img.bgnd {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -1;
+}
+  </style>
+</head>
+
+
+
+<body onload="determinSearchParameters()">
+
+    <div id="framecontent">
+      <div class="innertube">
+      <div id="menuA">
+    
+      <center>
+      <table style="width:800px">
+        <tr align="center">
+          <td><font size="4"><a href="index.html">HOME</a></font></td>	
+          <td><font size="4"><a href="contacts.html">CONTACTS</a></font></td>
+          <td><font size="4"><a href="aboutus.html">ABOUT US</a></font></td>
+          <td><font size="4"><a href="tracking.html">TRACKING</a></font></td>
+          <td><font size="4"><a href="employment.html">EMPLOYMENT</a></font></td>
+        </tr>
+      </table>
+      </center>
+    
+      </div>   
+      </div>
+    </div>
+    
+    <div id="maincontent">
+      <div class="innertube">
+
+      <div id="header">
+        <center>
+        <img src="images/HUB-logo4.jpg">
+        </center>
+      </div>
+
+      <br><br><br>
+
+      <center>
+      <hr width="800px">
+        <p class="mission">
+          <font face="tahoma" size="5" color ="#fff">
+
+            <br><br><br>
+            <strong>Webtracking</strong>
+
+            <form id = "searchForm" onsubmit="getResults(); return false">
+              <label>Search For: <input type="text" id="usrSearchInput" /></label>
+              <button type="submit">Search</button>
+            </form>
+      
+            <form id = "clearPage" onsubmit="window.location.reload()">
+              <button>Clear Results</button>
+            </form>
+            <h3 id="ErrorMsg"></h3>
+
+            If you run into any issues please email alex@hubdelivery.com with details about the error and a screenshot of this page. 
+            <br>
+            Thank you!
+
+          </font>
+        </p>
+
+        <table id="resultTable" > 
+          <tbody id="resultBody"> </tbody>
+        </table>
+        
+      </center>
+      </div>
+
+      <div id="footer">
+
+        <center>
+        <table class="table4" style="width:900px">
+          <tr valign="top">
+            <td width="450px">
+            <strong>HUB Delivery Incorporated</strong><br><br>
+            845 Woburn Street<br>
+            Wilmington, MA 01887<br>
+            1.978.658.6377 :Phone<br>
+            1.978.658.5079 :Fax<br><br>
+      
+            Office Hours:
+            M-F: 7:00 am - 4:30 pm est</td>
+      
+            <td width="450px" align="right">
+            <a href="https://www.facebook.com/HubDelivery" target="_blank"><img src="images/icon-facebook.jpg"></a> <a href="https://plus.google.com/102806677041130386264/about" target="_blank"><img src="images/icon-google.jpg"></a> <a href="https://www.linkedin.com/company/2619855" target="_blank"><img src="images/icon-in.jpg"></a> <a href="https://twitter.com/HubDelivery" target="_blank"><img src="images/icon-twitter.jpg"></a><br><br>
+      
+            Email: info@HubDelivery.com<br><br>
+      
+            <font size="1">All Rights Reserved &copy; 2015 Hub Delivery Incorporated<br>
+            Site Design <a href="http://www.1800wda.com">Worldwide Digital Advertising</font></a>
+      
+            </td>
+          </tr>
+        </table>
+        </center>
+      </div>
+
+    </div>
+
+
+
+</body>
+
+
+
+<script>
+// Sets up and retreives the XML file
+function getResults() 
+{
+  var serverLink = "https://podtracking.hubdelivery.com:3000/Search?searchfor=" + document.getElementById("usrSearchInput").value;
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", serverLink, true);
+  xhttp.send();
+
+  xhttp.onreadystatechange = function() 
+  {
+    if (this.readyState == 4 && this.status == 200) {
+      const resultJSON = JSON.parse(this.responseText);
+      
+
+      const tbl = document.getElementById("resultTable");
+      const tblBody = document.getElementById("resultBody")
+
+      switch(resultJSON.errorCode)
+      {
+        case "400":
+          document.getElementById("ErrorMsg").textContent = "Error, find criteria empty. Code: " + resultJSON.errorCode;
+          return;
+          break;
+        case "401":
+          document.getElementById("ErrorMsg").textContent = "Error, no matching results found. Code: " + resultJSON.errorCode;
+          return;
+          break;
+        case "0":
+          document.getElementById("ErrorMsg").textContent = "";
+          break;
+        default:
+          document.getElementById("ErrorMsg").textContent = "Error finding results. Code: " + resultJSON.errorCode;
+          return;
+      }
+
+      //Omiting the last record since it's the signature image
+      for(let i = 0; i < resultJSON.records.length; i++)
+      {
+
+        //Generates the table headers on the first iteration
+        if(i == 0)
+        {
+          var headerRow = tblBody.insertRow();
+
+          for(const recordValue in resultJSON.records[i])
+          {
+            const headerCell = headerRow.insertCell();
+            headerCell.style.border = '2px solid';
+            const headerCellText = document.createTextNode(recordValue);
+            headerCell.style.textAlign = 'center';
+            headerCell.style.fontWeight = 'bold';
+            headerCell.appendChild(headerCellText);
+            headerRow.appendChild(headerCell);
+          }
+          //tblBody.appendChild(headerRow);
+        }
+
+        var newRow = tblBody.insertRow();
+        
+        for(const recordValue in resultJSON.records[i])
+        {
+          //Checks to see if it's the image field, if not populate the value
+          if(recordValue != "Signature_Image")
+          {
+            const newCell = newRow.insertCell();
+            newCell.style.border = '2px solid';
+            const cellText = document.createTextNode(resultJSON.records[i][recordValue]);
+            newCell.appendChild(cellText);
+            newRow.appendChild(newCell);
+          }
+          else
+          {
+            //Puts the image in the cell if it's the image field 
+            const newCell = newRow.insertCell();
+            newCell.style.border = '2px solid';
+            const cellImage = document.createElement('img');
+            cellImage.src = "https://www.hubdelivery.com/" + resultJSON.records[i][recordValue];
+            newCell.appendChild(cellImage);
+            newRow.appendChild(newCell);
+          }
+        }
+        tblBody.appendChild(newRow);
+      }
+    }
+  };
+
+
+}
+
+//Checks for a paramater given by the URL
+function determinSearchParameters()
+{
+  var urlParams = new URLSearchParams(window.location.search);
+  var hasParam = urlParams.has('Search')  || urlParams.has('search') || urlParams.has('SEARCH');
+
+  if(hasParam)
+  {
+    //If one of these is present, search the result
+    urlParams.forEach((value, key) => 
+    {
+      //document.getElementById("Service_Status").innerHTML = "TEST FAILED";
+
+      //Semi redundant but makes sure no other params are taken
+      if(key == 'Search' || key == 'search' || key == 'SEARCH')
+      {
+        document.getElementById("usrSearchInput").value = value; //Sets the search field to the param found
+        getResults();
+      }
+    });
+  } 
+}
+</script>
+
+</html>
