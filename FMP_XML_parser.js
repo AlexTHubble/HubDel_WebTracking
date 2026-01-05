@@ -2,12 +2,9 @@ const https = require('https');
 const http = require('http');
 const fs = require('fs');
 const clc = require("cli-color"); // https://www.npmjs.com/package/cli-color
-const puppeteer = require('puppeteer')
-const { PDFDocument, StandardFonts, rgb } = require('pdf-lib') // Using this guide for combining PDFs https://medium.com/@vijaykumard2000/merging-pdfs-into-a-single-document-using-nodejs-express-02ad4af79774
 
 const express = require('express');
 const app = express();
-
 
 //Node-FTP github https://github.com/mscdex/node-ftp
 const Client = require('ftp'); 
@@ -29,7 +26,6 @@ const port = HubTracker_Config.IpInfo.port;
 const serverip = HubTracker_Config.IpInfo.ip;
 
 const signatureImgPath = `/Volumes/FMP-Server/FMP_Files/RC_Data_FMS/LogicBoard/PODs`;
-const pdfOutputFolder = `${__dirname}/Output_Files`;
 
 //Sets up HTTPS and HTTP servers
 const httpsServer = https.createServer({
@@ -50,24 +46,6 @@ app.use(function(req, res, next)
     next();
 });
 
-//TODO: Deprecate
-app.get('/GetPrintablePDF', async (req, res) =>
-{
-
-    let inData = req.query.searchfor;
-    //inData = JSON.parse(inData);
-    //inData = decodeURI(inData);
-    console.log(req);
-
-    const browser = await puppeteer.launch() //Launch browser
-    const page = await browser.newPage(); //Opens a new page
-
-    page.setContent(inData)
-    await page.pdf({path: `${pdfOutputFolder}/testPDF.pdf`});
-    await browser.close();
-    res.sendFile(`${pdfOutputFolder}/testPDF.pdf`)
-})
-
 app.get('/GetPODImg', async (req, res) =>
 {
     //const signatureImage = `${signatureImgPath}/${dateSplit[2]}/${dateSplit[0]}/${dateSplit[1]}/${record[fieldsToDisplay.PRO_NUMBER.toDisplay]}.jpg`;
@@ -80,7 +58,7 @@ app.get('/GetPODImg', async (req, res) =>
     res.sendFile(path);
 })
 
-app.get('/GetSearchInfoBeta', async (req, res) =>
+app.get('/GetSearchInfo', async (req, res) =>
 {
     //Gather the info on the search and respond with a json
     let searchArry = req.query.searchfor.split(','); //Split the search by comma
@@ -187,92 +165,6 @@ app.get('/GetSearchInfoBeta', async (req, res) =>
     });
 })
 
-//TODO: Deprecate
-app.get('/GetSearchInfo', async (req, res) =>
-{
-    console.log("REQ received")
-    //Gather the info on the search and respond with a json
-    let searchArry = req.query.searchfor.split(','); //Split the search by comma
-
-    const outputs =
-        {
-            Results: [], //The results of the search
-            DisplayType: "", //The type of display the webpage should show
-            SearchName: req.query.searchfor
-        };
-
-    let fieldsToDisplayXML_BOL =
-        {
-            COSIGNOR_COMBINED: {toDisplay: "[Cosignor_Combined]", toSearch: "WEB_Cosignor_Combined"},
-            SHIPPER_COMBINED: {toDisplay: "[Shipper_Combined]", toSearch: "WEB_Shipper_Combined"},
-            BOL_NUMBER: {toDisplay: "[BOL_NUMBER]", toSearch: "BOL_NUMBER"},
-            PRO_NUMBER: {toDisplay: "[PRO_NUMBER]", toSearch: "PRO_NUMBER"},
-            SERVICE_STATUS: {toDisplay: "[Status_Service]", toSearch: "Status_Service"},
-            DATE_SHIPPED: {toDisplay: "[DATE_SHIPPED]", toSearch: "DATE_SHIPPED"},
-            DATE_EXPECTED: {toDisplay: "[DATE_EXPECTED]", toSearch: "DATE_EXPECTED"},
-            COMMENT: {toDisplay: "[Status_Service_Comment]", toSearch: "Status_Service_Comment"},
-            OSD: {toDisplay: "[OSD_WEB]", toSearch: "OSD_WEB"},
-            OSD_COMMENT: {toDisplay: "[OSD_COMMENT]", toSearch: "OSD_COMMENT"},
-            DATE_DELIVERED: {toDisplay: "[DATE_DELIVERED]", toSearch: "DATE_DELIVERED"},
-            REC_TIME: {toDisplay: "[POD_RECTIME]", toSearch: "POD_RECTIME"},
-            REC_BY: {toDisplay: "[POD_RECBY]", toSearch: "POD_RECBY"},
-            POD_NUMBER: {toDisplay: "[POD_NUMBER]", toSearch: "POD_NUMBER"},
-            RELATED_SETS: {XML_ID: {setName: "xml_id", valuesInSet: {ID_NUMBER: {toDisplay: "[ID_NUMBER]", toSearch: "xml_id::ID_NUMBER"}}}
-                         , XML_REF: {setName: "xml_ref", valuesInSet: {REF_NUMBER: {toDisplay: "[REF_NUMBER]", toSearch: "xml_ref::REF_NUMBER"},
-                                                                        REF_PO: {toDisplay: "[REF_PO]", toSearch: "xml_ref::REF_PO"}}}}
-        }
-
-    //New promise to finish looping before return
-    const multiSearchPromise = new Promise((resolve, reject) =>
-    {
-        for(const searchValue of searchArry)
-        {
-            let database = "LogicBoard"
-            let layout = "XML_BOL"
-            let toSearch = searchValue;
-            let fieldsToSearch = [fieldsToDisplayXML_BOL.RELATED_SETS.XML_REF.valuesInSet.REF_NUMBER.toSearch, //REF number (related set)
-                fieldsToDisplayXML_BOL.RELATED_SETS.XML_REF.valuesInSet.REF_PO.toSearch, //PO number (related set)
-                fieldsToDisplayXML_BOL.RELATED_SETS.XML_ID.valuesInSet.ID_NUMBER.toSearch, //ID number (related set)
-                fieldsToDisplayXML_BOL.BOL_NUMBER.toSearch, //BOL number
-                fieldsToDisplayXML_BOL.PRO_NUMBER.toSearch]; //PRO number
-            let xmlQuery = generateXMLQuery(toSearch, fieldsToSearch)
-
-            console.log(clc.green(`Beginning search for ${toSearch} at ${Date.now()}`));
-            BuildOutputData(database, layout, xmlQuery, fieldsToDisplayXML_BOL, false, toSearch).then(output => {
-                outputs.Results.push(output);
-                if(outputs.Results.length === searchArry.length)
-                    resolve(outputs);
-            })
-        }
-    }).then((outputs) => {
-        res.json(outputs) //Sends the results as a json
-    });
-})
-
-//TODO: Deprecate
-app.get('/GeneratePODPDF', async (req, res) =>
-{
-    //Take the information passed and respond with a pdf file
-    //Individual PDFS are created in BuildOutputData, this will merge all needed PDFs and respond with the merge
-
-    let searchInfo = req.query.searchfor.split(','); //Split the search by comma
-    //record["pdfPath"] = `${pdfOutputFolder}/${searchingFor}.pdf`;
-
-    let PDFArray = []
-    for(const POD of searchInfo)
-    {
-        PDFArray.push(`${pdfOutputFolder}/${POD}.pdf`);
-    }
-
-    let outputPDFPath = `${pdfOutputFolder}/${searchInfo.join("-")}.pdf`
-    mergePDFs(PDFArray,outputPDFPath).then(mergedFileNames => {
-        res.sendFile(mergedFileNames)
-        console.log(clc.green(`Finished generating PDF result for ${searchInfo.SearchName} at ${Date.now()}`));
-    })
-
-})
-
-
 //FUNCTIONS -----------------------
 
 function BuildOutputData(database, layout, searchQuery, fieldsToDisplay, doUploadSignature, searchingFor)
@@ -313,11 +205,6 @@ function BuildOutputData(database, layout, searchQuery, fieldsToDisplay, doUploa
                     //Converts the resultset count to an int
                     outputData.recordsFound = parseInt(parsedXML.fmresultset.resultset.att_count)
 
-                    //Sets up a Puppeteer browser with a page open to searchform.html
-                    const browser = await puppeteer.launch() //Launch browser
-                    const page = await browser.newPage(); //Opens a new page
-                    await page.goto(`file:${__dirname}/Result_Template/searchform.html`) //Sets page to our searchform.html
-
                     for (let i = 0; i < outputData.recordsFound; i++)
                     {
                         let record = {};
@@ -355,11 +242,7 @@ function BuildOutputData(database, layout, searchQuery, fieldsToDisplay, doUploa
                                                             "att_name", fieldsToDisplay.RELATED_SETS[table].valuesInSet[searchValue].toSearch));
                                                     }
                                                     let jsonName = fieldsToDisplay.RELATED_SETS[table].valuesInSet[searchValue].toDisplay;
-                                                    const resultArrayAsString = resultArray.join(', ');
                                                     record[jsonName] = resultArray;
-
-                                                    //Put a message in the PDF if multiple entries are found
-                                                    await replaceInnerHTML(resultArrayAsString, fieldsToDisplay.RELATED_SETS[table].valuesInSet[searchValue].toDisplay, page)
                                                 }
                                                 else
                                                 {
@@ -370,9 +253,6 @@ function BuildOutputData(database, layout, searchQuery, fieldsToDisplay, doUploa
                                                     let jsonName = fieldsToDisplay.RELATED_SETS[table].valuesInSet[searchValue].toDisplay;
 
                                                     record[jsonName] = resultArray;
-
-                                                    await replaceInnerHTML(record[jsonName][0],
-                                                        fieldsToDisplay.RELATED_SETS[table].valuesInSet[searchValue].toDisplay, page)
                                                 }
                                             }
                                         }
@@ -380,10 +260,8 @@ function BuildOutputData(database, layout, searchQuery, fieldsToDisplay, doUploa
                                         {
                                             //record[fieldsToDisplay.RELATED_SETS[table].valuesInSet[searchValue].toDisplay] = "N/A"; //TODO: handle better
                                         }
-
                                     }
                                 }
-
                             }
                             else //The rest of the stuff to display
                             {
@@ -392,31 +270,14 @@ function BuildOutputData(database, layout, searchQuery, fieldsToDisplay, doUploa
                                     record[fieldsToDisplay[key].toDisplay] = jsonSearch(parsedXML.fmresultset.resultset.record[i].field, "att_name", fieldsToDisplay[key].toSearch);
                                 else
                                     record[fieldsToDisplay[key].toDisplay] = jsonSearch(parsedXML.fmresultset.resultset.record.field, "att_name", fieldsToDisplay[key].toSearch);
-
-                                //Replace the innerHTML of the template page with the data
-                                await replaceInnerHTML(record[fieldsToDisplay[key].toDisplay],fieldsToDisplay[key].toDisplay, page)
                             }
                         }
-                        const dateSplit = record[fieldsToDisplay.DATE_SHIPPED.toDisplay].split('/');
-                        const signatureImage = `${signatureImgPath}/${dateSplit[2]}/${dateSplit[0]}/${dateSplit[1]}/${record[fieldsToDisplay.PRO_NUMBER.toDisplay]}.jpg`;
-                        await replaceInnerHTML(`<img src="${signatureImage}" />`, "[POD_IMAGE]", page);
-
-                        await page.pdf({path: `${pdfOutputFolder}/${searchingFor}.pdf`})
-                        record["pdfPath"] = `${pdfOutputFolder}/${searchingFor}.pdf`;
                         outputData.records.push(record);
                     }
-                    await browser.close() //Closes the puppeteer browser
                     resolve(outputData);
                 }
                 else
                 {
-                    //Create a PDF with the error message and return it
-                    const errorMessage = `Error while searching for ${searchingFor}, code ${parsedXML.fmresultset.error.att_code}`
-                    let record = {};
-                    let filePath = `${pdfOutputFolder}/${searchingFor}.pdf`
-                    await createPDFWithText(errorMessage, 20, filePath)
-                    record["pdfPath"] = filePath;
-                    outputData.records.push(record);
                     resolve(outputData);
                 }
 
