@@ -1,0 +1,223 @@
+a { color:#5D5D9E; } 
+a:visited { color:#5D5D9E; } 
+a:active { color:#5C615E; } 
+a:hover { color:#B2B3B4; }
+body { background-color:#FFFFFF; padding:0;  margin: 0; }
+.hidden { display:none; }
+.podimg {
+    content:"diplay";
+    display:block;
+    height:200px; /* your image height */
+    text-indent:-99999em;
+    width:200px; /* your image width */
+    overflow:hidden;}
+.textstyle1 { text-align:left;}
+
+
+body{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    height: 100%;
+    max-height: 100%;
+}
+
+p.mission {
+    text-align: center;
+    line-height: 250%;
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
+}
+
+/* unvisited link */
+a:link {
+    color: #444;
+}
+
+/* visited link */
+a:visited {
+    color: #FFFFFF;
+}
+
+/* mouse over link */
+a:hover {
+    color: #777777;
+}
+
+/* selected link */
+a:active {
+    color: #777777;
+}
+
+
+#framecontent{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px; /*Height of frame div*/
+    overflow: hidden; /*Disable scrollbars. Set to "scroll" to enable*/
+    background-color: #000;
+    color: black;
+}
+
+#maincontent{
+    position: fixed;
+    top: 100px; /*Set top value to HeightOfFrameDiv*/
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    background-color: #FFFFFF;
+    background-size: 100% 160%;
+}
+
+#header{
+    position: absolute;
+    top: -40px;
+    left: 0px;
+    width:100%;
+    z-index: 125
+    font-family: tahoma, verdana, arial;
+}
+
+#footer{
+    position: absolute;
+    left: 0px;
+    width:100%;
+    height:260px;
+    z-index: 125;
+    background-color: #fff;
+    font-family: tahoma, verdana, arial;
+}
+
+
+#menuA{
+    position: absolute;
+    width: 100%;
+    top: 40px;
+    left: 0px;
+    font-family: tahoma, verdana, arial;
+}
+
+#services{
+    background-color: #000;
+    margin-top: 140px;
+    color: #ffffff;
+    font-family: tahoma, verdana, arial;
+    font-size:1.0em;
+    width: 100%;
+    height: 100%;
+}
+
+.table-HeaderLeft
+{
+    border: 1px solid #8C8C8C; !important;
+    border-collapse: collapse;!important;
+    empty-cells: show;!important;
+    text-align: left;!important;
+    width: 650px;!important;
+
+    th
+    {
+        border: 1px solid #8C8C8C; !important;
+        padding: 3px;!important;
+        width: 35%;!important;
+        height: 15px;!important;
+    }
+    td {
+        border: 1px solid #8C8C8C; !important;
+        padding: 3px;!important;
+        height: 15px;!important;
+    }
+
+}
+
+.table-HeaderTop
+{
+    border: 1px solid #8C8C8C; !important;
+    border-collapse: collapse;!important;
+    empty-cells: show;!important;
+    text-align: left;!important;
+    width: 900px;!important;
+    height: 70px;!important;
+
+    th, td {
+        border: 1px solid #8C8C8C; !important;
+        height: 25%;!important;
+    }
+
+}
+
+.Table-HeaderTopHighlighted
+{
+    border: 1px solid #8C8C8C; !important;
+    border-collapse: collapse;!important;
+    empty-cells: show;!important;
+    text-align: left;!important;
+    width: 750px;!important;
+
+    th
+    {
+        border: 1px solid #8C8C8C; !important;
+        padding: 3px;!important;
+        height: 3px;!important;
+        background-color: #c2c2c2; !important;
+    }
+    td {
+        border: 1px solid #8C8C8C; !important;
+        width: 50px;!important;
+        padding: 3px;!important;
+        height: 15px;!important;
+    }
+
+}
+
+.smallColumn
+{
+    overflow: hidden;!important;
+    max-width: 30px;!important;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.innertube{
+    margin: 0px; /*Margins for inner DIV inside each DIV (to provide padding)*/
+}
+
+* html body{ /*IE6 hack*/
+    padding: 130px 0 0 0; /*Set value to (HeightOfFrameDiv 0 0 0)*/
+}
+
+* html #maincontent{ /*IE6 hack*/
+    height: 100%;
+    width: 100%;
+}
+
+img.bgnd {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -1;
+}
+
+@media print {
+    #framecontent{display:none;}
+    #searchFunctions{display:none;}
+    #footer{display:none;}
+    body, html {
+        width: 100%;
+        height: 100%;
+    }
+    th, td, table{
+        border: 1px solid #8C8C8C;
+    }
+
+    .page_break{ break-after: page; }
+
+}

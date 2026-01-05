@@ -1,0 +1,328 @@
+<!--Force IE6 into quirks mode with this comment tag-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+
+<title>HUB Delivery Package Tracking</title>
+    <link rel="stylesheet" href="PackageTracking.css" type="text/css" id="StyleSheet" />
+    <script type="text/javascript" src='WebTracking.js'> </script>
+</head>
+
+<body onload="determineSearchParameters()">
+
+    <div id="framecontent" style="text-align: center;">
+      <div class="innertube">
+      <div id="menuA">
+
+      <table style="width:800px">
+        <tr align="center">
+          <td><font size="4"><a href="index.html">HOME</a></font></td>	
+          <td><font size="4"><a href="contacts.html">CONTACTS</a></font></td>
+          <td><font size="4"><a href="aboutus.html">ABOUT US</a></font></td>
+          <td><font size="4"><a href="tracking.html">TRACKING</a></font></td>
+          <td><font size="4"><a href="employment.html">EMPLOYMENT</a></font></td>
+        </tr>
+      </table>
+
+      </div>   
+      </div>
+    </div>
+
+    <!-- HEADER -->
+    <div id="maincontent">
+      <div class="innertube" style="text-align: center;">
+          <div id="searchFunctions">
+              <br><br><br>
+
+              <hr width="800px">
+              <p class="mission">
+                  <font face="tahoma" size="3" color ="#000">
+
+                      <strong>Webtracking</strong>
+                      <br>
+                      <strong>Package Id Tracking</strong>
+                      <hr>
+
+                      <form id = "searchForm"  onsubmit="getResults(); return false" >
+                          <label>Tracking ID <input type="text" id="usrSearchInput" value="1Z71203"/></label>
+                          <button type="submit">Search</button>
+                      </form>
+
+                      <form id = "clearPage" onsubmit="window.location.reload()">
+                          <button>Clear Results</button>
+                      </form>
+                      <h3 id="ErrorMsg"></h3>
+
+                  </font>
+              </p>
+              <div id="printSection" class="hidden">
+                  <button id = "printButton" onclick="printTables()"> Print </button>
+
+                  <div id="printOptionsDiv" class="hidden">
+                      <label for="printOptions">Results to print: </label>
+                      <select name="printOptions" id="printOptions">
+                          <option value="All">All</option>
+
+                      </select>
+                  </div>
+
+              </div>
+          </div>
+
+      </div>
+
+        <div class="results hidden page_break" id="resultTable">
+            <hr>
+            <!-- TABLE #1, GENERAL INFO-->
+            <br>
+            <table class="table-HeaderLeft" style="width: 50%">
+                <tr>
+                    <th>Pro Number</th>
+                    <td id="PRO_NUMBER">[PRO_NUMBER]</td>
+                </tr>
+                <tr>
+                    <th >Bol Number</th>
+                    <td id="BOL_NUMBER">[BOL_NUMBER]</td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <th>Ship Date</th>
+                    <td id="DATE_SHIPPED">[DATE_SHIPPED]</td>
+                </tr>
+                <tr>
+                    <th>Scheduled Date</th>
+                    <td id="DATE_SCHEDULED">[DATE_SCHEDULED]</td>
+                </tr>
+                <tr>
+                    <th>Scheduled Window</th>
+                    <td id="DATE_SCHEDULED_TIME">[DATE_SCHEDULED_TIME]</td>
+                </tr>
+
+            </table>
+
+            <br>
+
+            <!-- TABLE #2, OSD, BOL level-->
+            <table class="table-HeaderLeft" style="width: 650px">
+                <tr>
+                    <th class="smallColumn" style="background-color: #c2c2c2">Over</th>
+                    <th class="smallColumn" style="background-color: #c2c2c2">Short</th>
+                    <th class="smallColumn" style="background-color: #c2c2c2">Damaged</th>
+                </tr>
+                <tr>
+                    <td id="OSD_O">[OSD_O]</td>
+                    <td id="OSD_S">[OSD_S]</td>
+                    <td id="OSD_D">[OSD_D]</td>
+                </tr>
+            </table>
+
+            <br>
+
+            <!-- TABLE #3, Special comments-->
+            <table class="table-HeaderLeft" style="width: 50%">
+                <tr>
+                    <th>Special Marks and Comments</th>
+                </tr>
+                <tr>
+                    <td style="height: 100px" id="NOTES_COMBINED"> [NOTES_COMBINED]</td>
+                </tr>
+            </table>
+
+            <br>
+
+            <!-- TABLE #4, Ship from and ship to-->
+            <table class="Table-HeaderTopHighlighted">
+                <tr>
+                    <th>Shipped From</th>
+                    <th></th>
+                    <th>Ship To</th>
+                </tr>
+                <tr>
+                    <td id="SH_NAME">[SH_NAME]</td>
+                    <td></td>
+                    <td id="CN_NAME">[CN_NAME]</td>
+                </tr>
+                <tr>
+                    <td id="SH_ADDRESS">[SH_ADDRESS]</td>
+                    <td></td>
+                    <td id="CN_ATTN">[CN_ATTN]</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td id="CN_ADDRESS">[CN_ADDRESS]</td>
+                </tr>
+                <tr>
+                    <td><p style="display:inline" id="SH_CITY">[SH_CITY]</p>
+                        <p style="display:inline" id="SH_STATE">[SH_STATE]</p>
+                        <p style="display:inline" id="SH_ZIP">[SH_ZIP]</p>
+                    </td>
+                    <td></td>
+                    <td>
+                        <p style="display:inline" id="CN_CITY">[CN_CITY]</p>
+                        <p style="display:inline" id="CN_STATE">[CN_STATE]</p>
+                        <p style="display:inline" id="CN_ZIP">[CN_ZIP]</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </table>
+
+            <!-- TABLE #5, Reference number-->
+            <div id="REF_Table">
+                <br>
+
+                <table class="table-HeaderTop">
+                    <tr>
+                        <th>Reference</th>
+                        <th>Shipment Number</th>
+                        <th>Attn</th>
+                        <th>PO</th>
+                        <th style="width: 5px"></th>
+                        <th class="smallColumn">Pallet</th>
+                        <th class="smallColumn">Pcs</th>
+                        <th class="smallColumn">Lbs</th>
+                        <th style="background-color: #c2c2c2">Over</th>
+                        <th style="background-color: #c2c2c2">Short</th>
+                        <th style="background-color: #c2c2c2">Damaged</th>
+                    </tr>
+                    <tr id="REF_ROW" class="hidden">
+                        <td id="REF_NUMBER">[REF_NUMBER]</td>
+                        <td id="REF_SHIPMENT">[REF_SHIPMENT]</td>
+                        <td id="REF_CN_ATTN">[REF_CN_ATTN]</td>
+                        <td id="REF_PO">[REF_PO]</td>
+                        <td style="width: 5px"></td>
+                        <td class="" id="REF_PLT">[REF_PLT]</td>
+                        <td class="" id="REF_PCS">[REF_PCS]</td>
+                        <td class="smallColumn" id="REF_LBS">[REF_LBS]</td>
+                        <td id="REF_OSD_O">[REF_OSD_O]</td>
+                        <td id="REF_OSD_S">[REF_OSD_S]</td>
+                        <td id="REF_OSD_D">[REF_OSD_D]</td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <!-- TABLE #6, Identification number-->
+            <div id="ID_Table">
+                <br>
+                <table class="table-HeaderTop" style="width: 50%; margin-left:45px">
+                    <tr>
+                        <th>Id Number</th>
+                        <th class="smallColumn">Associated Reference Number</th>
+                        <th style="width: 5px"></th>
+                        <th class="smallColumn" style="background-color: #c2c2c2">Over</th>
+                        <th class="smallColumn" style="background-color: #c2c2c2">Short</th>
+                        <th class="smallColumn" style="background-color: #c2c2c2">Damaged</th>
+                    </tr>
+                    <tr id="ID_ROW" class="hidden">
+                        <td id="ID_NUMBER">[ID_NUMBER]</td>
+                        <td class="smallColumn" id="ID_REF">[ID_REF]</td>
+                        <td style="width: 5px"></td>
+                        <td class="smallColumn" id="ID_OSD_O">[ID_OSD_O]</td>
+                        <td class="smallColumn" id="ID_OSD_S">[ID_OSD_S]</td>
+                        <td class="smallColumn" id="ID_OSD_D">[ID_OSD_D]</td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <br>
+
+            <!-- TABLE #7, piece information-->
+            <table class="Table-HeaderTopHighlighted" style="width: 500px;">
+                <tr>
+                    <th>Total PLTs</th>
+                    <th>Total PCs</th>
+                    <th>Total LBs</th>
+                </tr>
+                <tr>
+                    <td id="BOL_PLT">[BOL_PLT]</td>
+                    <td id="BOL_PCS">[BOL_PCS]</td>
+                    <td id="BOL_LBS">[BOL_LBS]</td>
+                </tr>
+
+            </table>
+            <br>
+            <!-- TABLE #8, shipment status-->
+            <table class="table-HeaderTop">
+
+                <tr>
+                    <th>Status</th>
+                    <td id="Status_Service">[Status_Service]</td>
+                    <td id="Status_Service_Comment">[Status_Service_Comment]</td>
+                </tr>
+                <tr>
+                    <th>Completed Date</th>
+                    <td id="DATE_DELIVERED">[DATE_DELIVERED]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>Completed Time</th>
+                    <td id="POD_RECTIME">[POD_RECTIME]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>Receipt</th>
+                    <td id="POD_RECBY">[POD_RECBY]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td><img id="POD_IMG_FIELD" src="" alt="Signature image not available"></td>
+                    <td></td>
+                </tr>
+            </table>
+            <br>
+
+            <!-- TABLE #9, modification timestamp-->
+            <table class="table-HeaderLeft">
+                <tr>
+                    <th>Updated</th>
+                    <td id ="MODIFICATION_TIMESTAMP"> [MODIFICATION_TIMESTAMP] </td>
+
+                </tr>
+            </table>
+            <br>
+        </div>
+
+
+
+        <hr>
+      <div id="footer">
+
+        <center>
+        <table class="table4" style="width:900px">
+<font face="tahoma" size="3" color ="#000000">
+          <tr valign="top">
+            <td width="450px">
+            <strong>HUB Delivery Incorporated</strong><br><br>
+            845 Woburn Street<br>
+            Wilmington, MA 01887<br>
+            1.978.658.6377 :Phone<br>
+            1.978.658.5079 :Fax<br>
+      	    <a href="mailto:dispatch@hubdelivery.com">Dispatch@HubDelivery.com</a><br><br>
+            Office Hours:
+            M-F: 8:00 am - 4:00 pm est</td>
+</font>
+      
+ 
+          </tr>
+        </table>
+        </center>
+      </div>
+
+    </div>
+</body>
+
+</html>
