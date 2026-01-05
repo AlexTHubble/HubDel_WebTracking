@@ -1,6 +1,14 @@
 # HubDel_WebTracking
-NodeJS server designed to transmit data from HubDelivery's Filemaker Pro server to an external webpage.
+Node JS backend that communicates between a File Maker pro database server and a HTML frontend package tracking webpage.
 
-Currently grabs the data from FMP as an XML, converts the XML to a Javascript object, grabs the relevant data and creates a new JSON file, then returns that file. 
+## Functionallity 
+The functionality is split into three steps.
 
-HTML file grabs makes a request to the Node.js server, then displays the results to the user
+### Step 1
+Query the FMP server for a search, this retuns a XML file with the results. 
+
+### Step 2
+Convert the received XML file into a JSON format, send the requested info the frontend
+
+### Step 3
+Frontend requests a POD image, go to the specified file (dictated by the FMP server) and send that to the frontend. 
