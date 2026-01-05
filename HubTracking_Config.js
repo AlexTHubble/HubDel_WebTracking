@@ -13,4 +13,11 @@ const FTPConnector_Config =
     password: ""
 };
 
-module.exports = { fmpAuthentication_Config, FTPConnector_Config }
+const IpInfo =
+    {
+        ip: "",
+        port: 3000
+    }
+
+
+module.exports = { fmpAuthentication_Config, FTPConnector_Config, IpInfo }
