@@ -450,66 +450,6 @@ function jsonSearch(jsonArray, attributeToSearch, resultToSearch)
     return returnValue
 }
 
-//Uses page.evaluate to find a selector and change the text to the desired text
-async function replaceInnerHTML(changeTo, toChange, page)
-{
-    //All the tables within the results html have a 'hidden' class with an id that = the toSearch value without the []
-    // and a _ID at the end, this will generate us the id value
-    let elementId = toChange.replace('[', '');
-    elementId = elementId.replace(']', '');
-    elementId = elementId + '_ID';
-
-    await page.evaluate(([toChange, changeTo, elementId]) => {
-
-        //Finds the element with given ID, then removes the hidden class to display the <tr> value associated
-        if(document.getElementById(elementId) !== null && changeTo !== "")
-            document.getElementById(elementId).classList.remove('hidden');
-        //TODO: there's probably a safer way of changing the values of the <td> elements with the added ID, look into this
-        document.body.innerHTML = document.body.innerHTML.replace(toChange, changeTo);
-    }, [toChange, changeTo, elementId]);
-}
-
-//From https://medium.com/@vijaykumard2000/merging-pdfs-into-a-single-document-using-nodejs-express-02ad4af79774
-async function mergePDFs(pdfPaths, outputPath)
-{
-    const mergedPdf = await PDFDocument.create();
-
-    for (const pdfPath of pdfPaths)
-    {
-        const pdfBytes = fs.readFileSync(pdfPath);
-        const pdf = await PDFDocument.load(pdfBytes);
-        const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-        copiedPages.forEach(page => mergedPdf.addPage(page));
-    }
-
-    const mergedPdfBytes = await mergedPdf.save();
-    fs.writeFileSync(outputPath, mergedPdfBytes);
-
-    return outputPath;
-}
-
-async function createPDFWithText(textToUse, fontSize, savePath)
-{
-    const pdf = await PDFDocument.create();
-    const page = pdf.addPage();
-
-    const { width, height } = page.getSize();
-    const timesRomanFont = await pdf.embedFont(StandardFonts.TimesRoman)
-
-    page.drawText(textToUse, {
-        x:50,
-        y: height - 4 * fontSize,
-        size: fontSize,
-        font: timesRomanFont,
-        color: rgb(0,0,0)
-    });
-
-    const pdfBytes = await pdf.save()
-    await fs.writeFileSync(savePath, pdfBytes, err => {
-        if(err) return console.log(err.message);
-    });
-}
-
 function generateXMLQuery(toSearch, fieldsToSearch)
 {
     let xmlQuery = `-query=`; //Start of the search query
